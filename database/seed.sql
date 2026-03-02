@@ -1,5 +1,4 @@
 \encoding UTF8
-\c casemng;
 
 -- 기존 데이터 초기화
 TRUNCATE TABLE student_org_links, network_orgs, transfer_logs, attachments,

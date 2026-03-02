@@ -1,5 +1,4 @@
 \encoding UTF8
-\c casemng;
 
 DROP TABLE IF EXISTS student_org_links CASCADE;
 DROP TABLE IF EXISTS transfer_logs CASCADE;

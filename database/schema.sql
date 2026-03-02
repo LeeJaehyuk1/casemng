@@ -1,5 +1,4 @@
 \encoding UTF8
-\c casemng;
 
 CREATE TABLE IF NOT EXISTS users (
     id            SERIAL PRIMARY KEY,
