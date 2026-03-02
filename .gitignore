@@ -1,0 +1,31 @@
+# 의존성
+node_modules/
+server/node_modules/
+client/node_modules/
+
+# 빌드 결과물
+client/dist/
+
+# 환경변수 (절대 커밋 금지)
+.env
+server/.env
+client/.env
+
+# 업로드 파일 (로컬 전용)
+uploads/
+server/uploads/
+
+# 로그
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 에디터
+.vscode/
+.idea/
+
+# Claude Code
+.claude/
