@@ -28,20 +28,24 @@ function AttachmentList({ attachments, caseId, onDeleted }) {
 
   if (!attachments || attachments.length === 0) return <Text type="secondary">-</Text>
 
+  const handleDownload = async (a) => {
+    try {
+      await downloadAttachment(a.id, a.original_name)
+    } catch { message.error('다운로드 실패') }
+  }
+
   return (
     <Space direction="vertical" size={2}>
       {attachments.map(a => (
         <Space key={a.id} size={4}>
           <PaperClipOutlined style={{ color: '#1677ff' }} />
-          <a
-            href={downloadAttachment(a.id)}
-            target="_blank"
-            rel="noreferrer"
-            style={{ fontSize: 12, maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'inline-block' }}
+          <span
+            onClick={() => handleDownload(a)}
+            style={{ fontSize: 12, maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'inline-block', color: '#1677ff', cursor: 'pointer' }}
             title={a.original_name}
           >
             {a.original_name}
-          </a>
+          </span>
           <Popconfirm title="파일을 삭제하시겠습니까?" onConfirm={() => handleDelete(a.id)} okText="삭제" cancelText="취소">
             <DeleteOutlined style={{ color: '#ff4d4f', cursor: 'pointer', fontSize: 11 }} />
           </Popconfirm>

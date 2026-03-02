@@ -60,7 +60,20 @@ export const uploadAttachments = (caseHistoryId, files) => {
   files.forEach(f => formData.append('files', f))
   return api.post('/attachments', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
-export const downloadAttachment = (id) => `/api/attachments/${id}/download`
+export const downloadAttachment = async (id, filename) => {
+  const token = localStorage.getItem('token')
+  const res = await fetch(`/api/attachments/${id}/download`, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+  if (!res.ok) throw new Error('다운로드 실패')
+  const blob = await res.blob()
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename || 'download'
+  a.click()
+  URL.revokeObjectURL(url)
+}
 export const deleteAttachment = (id) => api.delete(`/attachments/${id}`)
 
 // Transfers
