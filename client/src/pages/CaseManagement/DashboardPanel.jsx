@@ -85,31 +85,31 @@ export default function DashboardPanel({ onSelectStudent }) {
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: '#f5f6fa' }}>
       {/* 상단 배너 */}
       <div style={{
-        background: 'linear-gradient(90deg, #003eb3 0%, #4a0d9e 100%)',
+        background: '#fff',
         padding: '20px 28px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
         <Space align="center" size={12}>
           <div style={{
             width: 40, height: 40, borderRadius: '50%',
-            background: 'rgba(255,255,255,0.2)',
+            background: '#f0f4ff',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
-            <CalendarOutlined style={{ fontSize: 20, color: '#fff' }} />
+            <CalendarOutlined style={{ fontSize: 20, color: '#003eb3' }} />
           </div>
           <div>
-            <div style={{ color: '#fff', fontWeight: 700, fontSize: 16 }}>일별 사례이력 조회</div>
-            <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 12 }}>
+            <div style={{ color: '#1a1a2e', fontWeight: 700, fontSize: 16 }}>일별 사례이력 조회</div>
+            <div style={{ color: '#888', fontSize: 12 }}>
               날짜를 선택하면 해당일의 사례이력을 조회합니다.
             </div>
           </div>
         </Space>
         <div style={{
-          background: 'rgba(255,255,255,0.15)',
+          background: '#f0f4ff',
           borderRadius: 12, padding: '8px 20px', textAlign: 'center',
         }}>
-          <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: 12 }}>총 건수</div>
-          <div style={{ color: '#fff', fontWeight: 700, fontSize: 24 }}>{cases.length}</div>
+          <div style={{ color: '#888', fontSize: 12 }}>총 건수</div>
+          <div style={{ color: '#003eb3', fontWeight: 700, fontSize: 24 }}>{cases.length}</div>
         </div>
       </div>
 
