@@ -42,7 +42,7 @@ export default function MainLayout() {
       <Header style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0 24px',
-        background: 'linear-gradient(90deg, #1677ff 0%, #722ed1 100%)',
+        background: 'linear-gradient(90deg, #003eb3 0%, #4a0d9e 100%)',
         boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
       }}>
         <Space size={32}>
