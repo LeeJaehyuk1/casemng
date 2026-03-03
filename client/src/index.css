@@ -19,3 +19,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 
 /* 대시보드 테이블 홀짝 행 */
 .table-row-alt { background: #fafafa; }
+
+/* 조회 버튼 그라디언트 (hover/active 포함) */
+.btn-search-gradient,
+.btn-search-gradient:hover,
+.btn-search-gradient:focus,
+.btn-search-gradient:active {
+  background: linear-gradient(90deg, #003eb3, #4a0d9e) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}

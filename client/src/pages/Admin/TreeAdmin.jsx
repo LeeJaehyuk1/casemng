@@ -5,7 +5,7 @@ import {
 } from 'antd'
 import {
   FolderAddOutlined, EditOutlined, DeleteOutlined,
-  FolderOutlined, FolderOpenOutlined, CheckCircleOutlined, HolderOutlined
+  FolderOutlined, CheckCircleOutlined, HolderOutlined, ApartmentOutlined
 } from '@ant-design/icons'
 import { getTree, createTreeNode, updateTreeNode, deleteTreeNode, reorderTree } from '../../api'
 
@@ -44,8 +44,8 @@ export default function TreeAdmin() {
   const [folders, setFolders] = useState([])
   const [loading, setLoading] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
-  const [editingFolder, setEditingFolder] = useState(null) // null = 추가, object = 수정
-  const [parentFolder, setParentFolder] = useState(null)  // 추가 시 부모
+  const [editingFolder, setEditingFolder] = useState(null)
+  const [parentFolder, setParentFolder] = useState(null)
   const [form] = Form.useForm()
 
   const loadTree = useCallback(async () => {
@@ -205,9 +205,22 @@ export default function TreeAdmin() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-        <Text strong>트리 구조 관리</Text>
-        <Button icon={<FolderAddOutlined />} size="small" onClick={() => openAdd(null)}>
+      {/* 내부 헤더 */}
+      <div style={{
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        marginBottom: 16, paddingBottom: 16, borderBottom: '1px solid #f0f0f0',
+      }}>
+        <Space align="center" size={8}>
+          <ApartmentOutlined style={{ color: '#003eb3', fontSize: 16 }} />
+          <span style={{ fontWeight: 600, fontSize: 14, color: '#1a1a2e' }}>트리 구조 관리</span>
+        </Space>
+        <Button
+          icon={<FolderAddOutlined />}
+          size="small"
+          onClick={() => openAdd(null)}
+          className="btn-search-gradient"
+          type="primary"
+        >
           최상위 폴더 추가
         </Button>
       </div>
@@ -217,7 +230,7 @@ export default function TreeAdmin() {
         description="최대 3레벨까지 폴더를 생성할 수 있습니다. 시스템 폴더(진행중/완료)는 수정/삭제할 수 없습니다. 학생이 존재하는 폴더는 삭제할 수 없습니다. 폴더 왼쪽의 ⠿ 아이콘을 드래그하여 같은 레벨 내 순서를 변경할 수 있습니다."
         type="info"
         showIcon
-        style={{ marginBottom: 12, fontSize: 12 }}
+        style={{ marginBottom: 16, fontSize: 12 }}
       />
 
       <Tree
@@ -246,6 +259,7 @@ export default function TreeAdmin() {
         onCancel={() => setModalOpen(false)}
         okText={editingFolder ? '수정' : '추가'}
         destroyOnClose
+        okButtonProps={{ className: 'btn-search-gradient' }}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item name="name" label="폴더 이름" rules={[{ required: true, message: '폴더 이름을 입력하세요.' }]}>

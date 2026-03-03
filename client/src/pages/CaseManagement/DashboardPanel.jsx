@@ -144,7 +144,7 @@ export default function DashboardPanel({ onSelectStudent }) {
           type="primary"
           icon={<ReloadOutlined />}
           onClick={() => load(date, studentName)}
-          style={{ background: 'linear-gradient(90deg, #003eb3, #4a0d9e)', border: 'none' }}
+          className="btn-search-gradient"
         >
           조회
         </Button>

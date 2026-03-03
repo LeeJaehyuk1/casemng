@@ -3,7 +3,7 @@ import {
   Table, Button, Modal, Form, Input, Select, Space,
   message, Tag, Popconfirm, Typography, Switch, Tooltip
 } from 'antd'
-import { PlusOutlined, EditOutlined, UserDeleteOutlined } from '@ant-design/icons'
+import { PlusOutlined, EditOutlined, UserDeleteOutlined, TeamOutlined } from '@ant-design/icons'
 import { getUsers, createUser, updateUser, deleteUser } from '../../api'
 
 const { Option } = Select
@@ -82,34 +82,53 @@ export default function UserAdmin() {
       title: '아이디',
       dataIndex: 'username',
       key: 'username',
-      width: 120,
+      width: 130,
+      align: 'center',
     },
     {
       title: '이름',
       dataIndex: 'name',
       key: 'name',
       width: 100,
+      align: 'center',
+      render: v => <Text strong>{v}</Text>,
     },
     {
       title: '권한',
       dataIndex: 'role',
       key: 'role',
       width: 90,
-      render: v => <Tag color={v === 'admin' ? 'red' : 'blue'}>{v === 'admin' ? '관리자' : '담당자'}</Tag>,
+      align: 'center',
+      render: v => <Tag color={v === 'admin' ? 'red' : 'geekblue'}>{v === 'admin' ? '관리자' : '담당자'}</Tag>,
     },
-    { title: '연락처', dataIndex: 'phone', key: 'phone', width: 130 },
-    { title: '이메일', dataIndex: 'email', key: 'email' },
+    {
+      title: '연락처',
+      dataIndex: 'phone',
+      key: 'phone',
+      width: 140,
+      align: 'center',
+      render: v => v || '-',
+    },
+    {
+      title: '이메일',
+      dataIndex: 'email',
+      key: 'email',
+      align: 'center',
+      render: v => v || '-',
+    },
     {
       title: '상태',
       dataIndex: 'is_active',
       key: 'is_active',
       width: 80,
+      align: 'center',
       render: v => <Tag color={v ? 'green' : 'default'}>{v ? '활성' : '비활성'}</Tag>,
     },
     {
       title: '관리',
       key: 'action',
       width: 100,
+      align: 'center',
       render: (_, record) => (
         <Space>
           <Tooltip title="수정">
@@ -133,9 +152,25 @@ export default function UserAdmin() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-        <Text strong>사용자 관리</Text>
-        <Button type="primary" icon={<PlusOutlined />} size="small" onClick={openAdd}>사용자 추가</Button>
+      {/* 내부 헤더 */}
+      <div style={{
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        marginBottom: 16, paddingBottom: 16, borderBottom: '1px solid #f0f0f0',
+      }}>
+        <Space align="center" size={8}>
+          <TeamOutlined style={{ color: '#003eb3', fontSize: 16 }} />
+          <span style={{ fontWeight: 600, fontSize: 14, color: '#1a1a2e' }}>사용자 관리</span>
+          <Tag color="geekblue" style={{ marginLeft: 4 }}>{users.length}명</Tag>
+        </Space>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          size="small"
+          onClick={openAdd}
+          className="btn-search-gradient"
+        >
+          사용자 추가
+        </Button>
       </div>
 
       <Table
@@ -145,6 +180,7 @@ export default function UserAdmin() {
         loading={loading}
         size="small"
         pagination={false}
+        rowClassName={(_, i) => i % 2 === 0 ? '' : 'table-row-alt'}
       />
 
       <Modal
@@ -155,6 +191,7 @@ export default function UserAdmin() {
         okText={editingUser ? '수정' : '등록'}
         confirmLoading={submitting}
         destroyOnClose
+        okButtonProps={{ className: 'btn-search-gradient' }}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           {!editingUser && (
