@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { Layout, Menu, Button, Space, Typography, Avatar, Dropdown } from 'antd'
+import React from 'react'
+import { Layout, Menu, Button, Typography, Avatar, Dropdown, Tooltip } from 'antd'
 import {
   FileDoneOutlined, ShareAltOutlined, ControlOutlined,
   UserOutlined, LogoutOutlined, SolutionOutlined
 } from '@ant-design/icons'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 
-const { Header, Content } = Layout
+const { Sider, Content } = Layout
 const { Text } = Typography
 
 export default function MainLayout() {
@@ -39,44 +39,76 @@ export default function MainLayout() {
 
   return (
     <Layout style={{ height: '100vh' }}>
-      <Header style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 24px',
-        background: 'linear-gradient(90deg, #003eb3 0%, #4a0d9e 100%)',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-      }}>
-        <Space size={32}>
-          <Text
+      <Sider
+        width={200}
+        style={{
+          background: 'linear-gradient(180deg, #003eb3 0%, #4a0d9e 100%)',
+          display: 'flex', flexDirection: 'column',
+          boxShadow: '2px 0 8px rgba(0,0,0,0.2)',
+        }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+          {/* 로고 */}
+          <div
             onClick={() => navigate('/cases', { state: { _home: Date.now() } })}
             style={{
-              color: '#fff', fontSize: 18, fontWeight: 700, whiteSpace: 'nowrap',
+              padding: '24px 16px 20px',
               cursor: 'pointer', userSelect: 'none',
-              transition: 'opacity 0.2s',
+              borderBottom: '1px solid rgba(255,255,255,0.15)',
             }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
           >
-            <SolutionOutlined style={{ marginRight: 8, fontSize: 20, verticalAlign: 'middle' }} />
-            사례관리 시스템
-          </Text>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{
+                width: 36, height: 36, borderRadius: '50%',
+                background: 'rgba(255,255,255,0.2)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+              }}>
+                <SolutionOutlined style={{ fontSize: 18, color: '#fff' }} />
+              </div>
+              <span style={{ color: '#fff', fontSize: 14, fontWeight: 700, lineHeight: 1.3 }}>
+                사례관리<br />시스템
+              </span>
+            </div>
+          </div>
+
+          {/* 메뉴 */}
           <Menu
-            theme="dark"
-            mode="horizontal"
+            mode="inline"
             selectedKeys={[selectedKey]}
             items={menuItems}
             onClick={({ key }) => navigate(key)}
-            disabledOverflow
-            style={{ background: 'transparent', borderBottom: 'none' }}
+            style={{
+              flex: 1,
+              background: 'transparent',
+              border: 'none',
+              marginTop: 8,
+            }}
+            theme="dark"
           />
-        </Space>
-        <Dropdown menu={{ items: userMenu }} placement="bottomRight">
-          <Button type="text" style={{ color: '#fff' }}>
-            <Avatar icon={<UserOutlined />} size="small" style={{ marginRight: 8, background: '#1677ff' }} />
-            {user.name}
-          </Button>
-        </Dropdown>
-      </Header>
-      <Content style={{ overflow: 'hidden', height: 'calc(100vh - 64px)' }}>
+
+          {/* 하단 유저 영역 */}
+          <div style={{
+            borderTop: '1px solid rgba(255,255,255,0.15)',
+            padding: '12px 16px',
+          }}>
+            <Dropdown menu={{ items: userMenu }} placement="topLeft">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+                <Avatar icon={<UserOutlined />} size={32} style={{ background: 'rgba(255,255,255,0.3)', flexShrink: 0 }} />
+                <div style={{ overflow: 'hidden' }}>
+                  <div style={{ color: '#fff', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {user.name}
+                  </div>
+                  <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 11 }}>
+                    {user.role === 'admin' ? '관리자' : '담당자'}
+                  </div>
+                </div>
+              </div>
+            </Dropdown>
+          </div>
+        </div>
+      </Sider>
+
+      <Content style={{ overflow: 'hidden', height: '100vh' }}>
         <Outlet />
       </Content>
     </Layout>
