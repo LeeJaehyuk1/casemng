@@ -5,6 +5,7 @@ import MainLayout from './components/MainLayout'
 import CaseManagement from './pages/CaseManagement'
 import NetworkManagement from './pages/NetworkManagement'
 import AdminPage from './pages/Admin'
+import Stats from './pages/Stats'
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem('token')
@@ -24,6 +25,7 @@ export default function App() {
           <Route index element={<Navigate to="/cases" replace />} />
           <Route path="cases" element={<CaseManagement />} />
           <Route path="network" element={<NetworkManagement />} />
+          <Route path="stats" element={<Stats />} />
           <Route path="admin" element={<AdminPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
