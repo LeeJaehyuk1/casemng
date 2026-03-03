@@ -91,8 +91,8 @@ router.put('/reorder', authMiddleware, adminOnly, async (req, res) => {
     await pool.query('BEGIN');
     for (const { id, order_num } of updates) {
       await pool.query(
-        'UPDATE tree_nodes SET order_num = $1 WHERE id = $2 AND node_type = $3',
-        [order_num, id, 'folder']
+        'UPDATE tree_nodes SET order_num = $1 WHERE id = $2',
+        [order_num, id]
       );
     }
     await pool.query('COMMIT');
