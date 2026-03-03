@@ -7,7 +7,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 .tree-sider .ant-tree { overflow-y: auto; }
 
 /* 사례이력 테이블 */
-.case-content-cell { white-space: pre-wrap; max-width: 400px; }
+.case-content-cell { white-space: pre-wrap; word-break: break-word; width: 100%; }
 
 /* 인적사항 패널 */
 .student-info-panel .ant-descriptions-item-label { font-weight: 600; min-width: 80px; }
