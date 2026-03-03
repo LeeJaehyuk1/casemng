@@ -90,12 +90,20 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
-// PUT /api/cases/:id - 사례이력 수정
+// PUT /api/cases/:id - 사례이력 수정 (admin 또는 본인만)
 router.put('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
   const { case_date, category, content } = req.body;
 
   try {
+    const check = await pool.query('SELECT created_by FROM case_histories WHERE id = $1', [id]);
+    if (check.rows.length === 0) {
+      return res.status(404).json({ message: '사례이력을 찾을 수 없습니다.' });
+    }
+    if (req.user.role !== 'admin' && check.rows[0].created_by !== req.user.id) {
+      return res.status(403).json({ message: '본인이 등록한 이력만 수정할 수 있습니다.' });
+    }
+
     const result = await pool.query(
       `UPDATE case_histories
        SET case_date = COALESCE($1, case_date),
@@ -106,9 +114,6 @@ router.put('/:id', authMiddleware, async (req, res) => {
        RETURNING *`,
       [case_date, category, content, id]
     );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: '사례이력을 찾을 수 없습니다.' });
-    }
     res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
@@ -116,10 +121,18 @@ router.put('/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// DELETE /api/cases/:id - 사례이력 삭제
+// DELETE /api/cases/:id - 사례이력 삭제 (admin 또는 본인만)
 router.delete('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
   try {
+    const check = await pool.query('SELECT created_by FROM case_histories WHERE id = $1', [id]);
+    if (check.rows.length === 0) {
+      return res.status(404).json({ message: '사례이력을 찾을 수 없습니다.' });
+    }
+    if (req.user.role !== 'admin' && check.rows[0].created_by !== req.user.id) {
+      return res.status(403).json({ message: '본인이 등록한 이력만 삭제할 수 있습니다.' });
+    }
+
     await pool.query('DELETE FROM case_histories WHERE id = $1', [id]);
     res.json({ message: '삭제되었습니다.' });
   } catch (err) {

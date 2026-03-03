@@ -63,6 +63,10 @@ export default function CaseHistory({ studentId }) {
   const [fileList, setFileList] = useState([])
   const [submitting, setSubmitting] = useState(false)
   const [form] = Form.useForm()
+  const currentUser = JSON.parse(localStorage.getItem('user') || '{}')
+
+  const canEdit = (record) =>
+    currentUser.role === 'admin' || record.created_by === currentUser.id
 
   const loadCases = async () => {
     if (!studentId) return
@@ -195,18 +199,23 @@ export default function CaseHistory({ studentId }) {
       align: 'center',
       render: (_, record) => (
         <Space>
-          <Tooltip title="수정">
-            <Button icon={<EditOutlined />} size="small" onClick={() => openEdit(record)} />
-          </Tooltip>
-          <Popconfirm
-            title="삭제하시겠습니까?"
-            onConfirm={() => handleDelete(record.id)}
-            okText="삭제" cancelText="취소" okType="danger"
-          >
-            <Tooltip title="삭제">
-              <Button icon={<DeleteOutlined />} size="small" danger />
+          {canEdit(record) && (
+            <Tooltip title="수정">
+              <Button icon={<EditOutlined />} size="small" onClick={() => openEdit(record)} />
             </Tooltip>
-          </Popconfirm>
+          )}
+          {canEdit(record) && (
+            <Popconfirm
+              title="삭제하시겠습니까?"
+              onConfirm={() => handleDelete(record.id)}
+              okText="삭제" cancelText="취소" okType="danger"
+            >
+              <Tooltip title="삭제">
+                <Button icon={<DeleteOutlined />} size="small" danger />
+              </Tooltip>
+            </Popconfirm>
+          )}
+          {!canEdit(record) && <span style={{ color: '#d9d9d9', fontSize: 12 }}>-</span>}
         </Space>
       ),
     },
