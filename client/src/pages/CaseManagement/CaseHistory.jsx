@@ -146,6 +146,7 @@ export default function CaseHistory({ studentId }) {
       dataIndex: 'case_date',
       key: 'case_date',
       width: 100,
+      align: 'center',
       render: v => dayjs(v).format('YYYY-MM-DD'),
       sorter: (a, b) => dayjs(a.case_date).unix() - dayjs(b.case_date).unix(),
       defaultSortOrder: 'descend',
@@ -155,6 +156,7 @@ export default function CaseHistory({ studentId }) {
       dataIndex: 'category',
       key: 'category',
       width: 100,
+      align: 'center',
       render: v => <Tag color="blue">{v}</Tag>,
       filters: CATEGORIES.map(c => ({ text: c, value: c })),
       onFilter: (val, record) => record.category === val,
@@ -163,12 +165,14 @@ export default function CaseHistory({ studentId }) {
       title: '내용',
       dataIndex: 'content',
       key: 'content',
+      align: 'left',
       render: (v) => <div className="case-content-cell">{v}</div>,
     },
     {
       title: '첨부',
       key: 'attachments',
       width: 180,
+      align: 'center',
       render: (_, record) => (
         <AttachmentList
           attachments={record.attachments}
@@ -182,11 +186,13 @@ export default function CaseHistory({ studentId }) {
       dataIndex: 'created_by_name',
       key: 'created_by_name',
       width: 80,
+      align: 'center',
     },
     {
       title: '관리',
       key: 'action',
       width: 80,
+      align: 'center',
       render: (_, record) => (
         <Space>
           <Tooltip title="수정">
