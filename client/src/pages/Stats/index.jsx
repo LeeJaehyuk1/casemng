@@ -46,8 +46,10 @@ export default function Stats() {
   const [categoryData, setCategoryData] = useState([])
   const [schoolData, setSchoolData] = useState([])
   const [schoolType, setSchoolType] = useState('초등학교')
+  const [studentData, setStudentData] = useState([])
   const [loadingCat, setLoadingCat] = useState(false)
   const [loadingSchool, setLoadingSchool] = useState(false)
+  const [loadingStudent, setLoadingStudent] = useState(false)
 
   const loadAll = async (range = dateRange, type = schoolType) => {
     if (!range?.[0] || !range?.[1]) return
@@ -64,6 +66,12 @@ export default function Stats() {
       .then(res => setSchoolData(res.data))
       .catch(() => setSchoolData([]))
       .finally(() => setLoadingSchool(false))
+
+    setLoadingStudent(true)
+    api.get('/stats/student', { params })
+      .then(res => setStudentData(res.data))
+      .catch(() => setStudentData([]))
+      .finally(() => setLoadingStudent(false))
   }
 
   const handleSchoolTypeChange = (e) => {
@@ -200,6 +208,39 @@ export default function Stats() {
                 <Bar dataKey="count" radius={[6, 6, 0, 0]} maxBarSize={50}>
                   {schoolData.map((_, i) => (
                     <Cell key={i} fill={SCHOOL_COLORS[i % SCHOOL_COLORS.length]} />
+                  ))}
+                  <LabelList dataKey="count" position="top" style={{ fontSize: 11, fontWeight: 600 }} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </ChartCard>
+        </div>
+
+        {/* 학생별 이력현황 */}
+        <div style={{ marginTop: 20 }}>
+          <ChartCard
+            title="학생별 이력현황"
+            loading={loadingStudent}
+            empty={studentData.length === 0}
+          >
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={studentData} margin={{ top: 20, right: 10, left: 0, bottom: 40 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis
+                  dataKey="student"
+                  tick={{ fontSize: 12 }}
+                  angle={-30}
+                  textAnchor="end"
+                  interval={0}
+                />
+                <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
+                <Tooltip
+                  formatter={(v) => [`${v}건`, '건수']}
+                  contentStyle={{ borderRadius: 8, border: '1px solid #eee' }}
+                />
+                <Bar dataKey="count" radius={[6, 6, 0, 0]} maxBarSize={50}>
+                  {studentData.map((_, i) => (
+                    <Cell key={i} fill={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
                   ))}
                   <LabelList dataKey="count" position="top" style={{ fontSize: 11, fontWeight: 600 }} />
                 </Bar>
