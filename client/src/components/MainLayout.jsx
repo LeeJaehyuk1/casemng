@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { Layout, Menu, Typography, Avatar, Dropdown, Tooltip } from 'antd'
+import { Layout, Typography, Avatar, Dropdown, Tooltip } from 'antd'
 import {
   FileDoneOutlined, ShareAltOutlined, ControlOutlined,
   UserOutlined, LogoutOutlined, SolutionOutlined
 } from '@ant-design/icons'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 
-const { Content } = Layout
+
 const { Text } = Typography
 
 const COLLAPSED_W = 56
@@ -162,9 +162,9 @@ export default function MainLayout() {
         </Dropdown>
       </div>
 
-      <Content style={{ overflow: 'hidden', height: '100vh' }}>
+      <div style={{ flex: 1, overflow: 'hidden', minWidth: 0, height: '100vh' }}>
         <Outlet />
-      </Content>
+      </div>
     </Layout>
   )
 }
