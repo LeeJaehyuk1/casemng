@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { Layout, Typography, Avatar, Dropdown, Tooltip } from 'antd'
+import { Typography, Avatar, Dropdown, Tooltip } from 'antd'
 import {
   FileDoneOutlined, ShareAltOutlined, ControlOutlined,
   UserOutlined, LogoutOutlined, SolutionOutlined
 } from '@ant-design/icons'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
-
 
 const { Text } = Typography
 
@@ -43,7 +42,7 @@ export default function MainLayout() {
   const selectedKey = menuItems.find(m => location.pathname.startsWith(m.key))?.key || '/cases'
 
   return (
-    <Layout style={{ height: '100vh' }}>
+    <div style={{ display: 'flex', flexDirection: 'row', height: '100vh', overflow: 'hidden' }}>
       {/* 커스텀 사이드바 */}
       <div
         onMouseEnter={() => setHovered(true)}
@@ -162,9 +161,9 @@ export default function MainLayout() {
         </Dropdown>
       </div>
 
-      <div style={{ flex: 1, overflow: 'hidden', minWidth: 0, height: '100vh' }}>
+      <div style={{ flex: 1, overflow: 'hidden', minWidth: 0 }}>
         <Outlet />
       </div>
-    </Layout>
+    </div>
   )
 }
