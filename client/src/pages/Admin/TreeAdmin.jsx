@@ -207,7 +207,10 @@ export default function TreeAdmin() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <Text strong>트리 구조 관리</Text>
-        <Button icon={<FolderAddOutlined />} size="small" onClick={() => openAdd(folders.find(f => f.node_type === 'system_active'))}>
+        <Button icon={<FolderAddOutlined />} size="small" onClick={() => {
+          const sysActive = folders.find(f => f.node_type === 'system_active')
+          openAdd(sysActive ? { folderId: sysActive.id, title: sysActive.name } : null)
+        }}>
           최상위 폴더 추가
         </Button>
       </div>
@@ -240,7 +243,7 @@ export default function TreeAdmin() {
       />
 
       <Modal
-        title={editingFolder ? '폴더 이름 변경' : `하위 폴더 추가 ${parentFolder ? `(상위: ${parentFolder.title})` : ''}`}
+        title={editingFolder ? '폴더 이름 변경' : parentFolder ? `하위 폴더 추가 (상위: ${parentFolder.title})` : '폴더 추가'}
         open={modalOpen}
         onOk={() => form.submit()}
         onCancel={() => setModalOpen(false)}
