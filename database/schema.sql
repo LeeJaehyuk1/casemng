@@ -109,3 +109,77 @@ CREATE INDEX IF NOT EXISTS idx_case_histories_stud  ON case_histories(student_id
 CREATE INDEX IF NOT EXISTS idx_attachments_case     ON attachments(case_history_id);
 CREATE INDEX IF NOT EXISTS idx_transfer_logs_stud   ON transfer_logs(student_id);
 CREATE INDEX IF NOT EXISTS idx_student_org_student  ON student_org_links(student_id);
+
+-- 프로그램 기본정보
+CREATE TABLE IF NOT EXISTS programs (
+  id           SERIAL PRIMARY KEY,
+  name         VARCHAR(200) NOT NULL,
+  category     VARCHAR(50),
+  start_date   DATE,
+  end_date     DATE,
+  location     VARCHAR(200),
+  status       VARCHAR(20) DEFAULT '진행중',
+  description  TEXT,
+  created_by   INTEGER REFERENCES users(id),
+  created_at   TIMESTAMP DEFAULT NOW(),
+  updated_at   TIMESTAMP DEFAULT NOW()
+);
+
+-- 예산 항목
+CREATE TABLE IF NOT EXISTS program_budgets (
+  id           SERIAL PRIMARY KEY,
+  program_id   INTEGER NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
+  item_name    VARCHAR(100),
+  amount       INTEGER DEFAULT 0,
+  note         TEXT
+);
+
+-- 강사 마스터
+CREATE TABLE IF NOT EXISTS program_instructors (
+  id           SERIAL PRIMARY KEY,
+  name         VARCHAR(100) NOT NULL,
+  phone        VARCHAR(50),
+  email        VARCHAR(200),
+  specialty    VARCHAR(200),
+  note         TEXT,
+  created_at   TIMESTAMP DEFAULT NOW()
+);
+
+-- 회차(세션)
+CREATE TABLE IF NOT EXISTS program_sessions (
+  id            SERIAL PRIMARY KEY,
+  program_id    INTEGER NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
+  session_num   INTEGER NOT NULL,
+  session_date  DATE,
+  location      VARCHAR(200),
+  instructor_id INTEGER REFERENCES program_instructors(id) ON DELETE SET NULL,
+  content       TEXT,
+  notes         TEXT,
+  created_at    TIMESTAMP DEFAULT NOW()
+);
+
+-- 참여학생
+CREATE TABLE IF NOT EXISTS program_students (
+  id           SERIAL PRIMARY KEY,
+  program_id   INTEGER NOT NULL REFERENCES programs(id) ON DELETE CASCADE,
+  student_id   INTEGER NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+  enrolled_at  TIMESTAMP DEFAULT NOW(),
+  UNIQUE (program_id, student_id)
+);
+
+-- 출석
+CREATE TABLE IF NOT EXISTS program_attendance (
+  id           SERIAL PRIMARY KEY,
+  session_id   INTEGER NOT NULL REFERENCES program_sessions(id) ON DELETE CASCADE,
+  student_id   INTEGER NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+  attended     BOOLEAN DEFAULT FALSE,
+  note         TEXT,
+  UNIQUE (session_id, student_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_programs_status         ON programs(status);
+CREATE INDEX IF NOT EXISTS idx_program_budgets_prog    ON program_budgets(program_id);
+CREATE INDEX IF NOT EXISTS idx_program_sessions_prog   ON program_sessions(program_id);
+CREATE INDEX IF NOT EXISTS idx_program_students_prog   ON program_students(program_id);
+CREATE INDEX IF NOT EXISTS idx_program_students_stud   ON program_students(student_id);
+CREATE INDEX IF NOT EXISTS idx_program_attendance_sess ON program_attendance(session_id);

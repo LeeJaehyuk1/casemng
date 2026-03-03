@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Typography, Avatar, Dropdown, Tooltip } from 'antd'
 import {
   FileDoneOutlined, ShareAltOutlined, ControlOutlined,
-  UserOutlined, LogoutOutlined, SolutionOutlined, BarChartOutlined
+  UserOutlined, LogoutOutlined, SolutionOutlined, BarChartOutlined, AppstoreOutlined
 } from '@ant-design/icons'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 
@@ -25,9 +25,10 @@ export default function MainLayout() {
   }
 
   const menuItems = [
-    { key: '/cases',   icon: <FileDoneOutlined />,   label: '사례관리' },
-    { key: '/network', icon: <ShareAltOutlined />,   label: '네트워크관리' },
-    { key: '/stats',   icon: <BarChartOutlined />,   label: '데이터통계' },
+    { key: '/cases',    icon: <FileDoneOutlined />,   label: '사례관리' },
+    { key: '/network',  icon: <ShareAltOutlined />,   label: '네트워크관리' },
+    { key: '/programs', icon: <AppstoreOutlined />,   label: '프로그램관리' },
+    { key: '/stats',    icon: <BarChartOutlined />,   label: '데이터통계' },
     ...(user.role === 'admin'
       ? [{ key: '/admin', icon: <ControlOutlined />, label: '관리자' }]
       : []

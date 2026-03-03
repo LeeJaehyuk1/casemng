@@ -28,6 +28,7 @@ app.use('/api/attachments', require('./routes/attachments'));
 app.use('/api/transfers',   require('./routes/transfers'));
 app.use('/api/network',     require('./routes/network'));
 app.use('/api/users',       require('./routes/users'));
+app.use('/api/programs',    require('./routes/programs'));
 app.use('/api/stats',       require('./routes/stats'));
 
 // 헬스체크

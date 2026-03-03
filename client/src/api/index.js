@@ -99,4 +99,32 @@ export const createUser = (data) => api.post('/users', data)
 export const updateUser = (id, data) => api.put(`/users/${id}`, data)
 export const deleteUser = (id) => api.delete(`/users/${id}`)
 
+// Programs
+export const getPrograms = () => api.get('/programs')
+export const getProgram = (id) => api.get(`/programs/${id}`)
+export const createProgram = (data) => api.post('/programs', data)
+export const updateProgram = (id, data) => api.put(`/programs/${id}`, data)
+export const deleteProgram = (id) => api.delete(`/programs/${id}`)
+
+// Program Students
+export const getProgramStudents = (id) => api.get(`/programs/${id}/students`)
+export const addProgramStudents = (id, studentIds) => api.post(`/programs/${id}/students`, { student_ids: studentIds })
+export const removeProgramStudent = (id, sid) => api.delete(`/programs/${id}/students/${sid}`)
+
+// Program Sessions
+export const getProgramSessions = (id) => api.get(`/programs/${id}/sessions`)
+export const createProgramSession = (id, data) => api.post(`/programs/${id}/sessions`, data)
+export const updateProgramSession = (id, sid, data) => api.put(`/programs/${id}/sessions/${sid}`, data)
+export const deleteProgramSession = (id, sid) => api.delete(`/programs/${id}/sessions/${sid}`)
+
+// Attendance
+export const getSessionAttendance = (id, sid) => api.get(`/programs/${id}/sessions/${sid}/attendance`)
+export const updateSessionAttendance = (id, sid, records) => api.put(`/programs/${id}/sessions/${sid}/attendance`, { records })
+
+// Instructors
+export const getInstructors = () => api.get('/programs/instructors')
+export const createInstructor = (data) => api.post('/programs/instructors', data)
+export const updateInstructor = (id, data) => api.put(`/programs/instructors/${id}`, data)
+export const deleteInstructor = (id) => api.delete(`/programs/instructors/${id}`)
+
 export default api

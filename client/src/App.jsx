@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import MainLayout from './components/MainLayout'
 import CaseManagement from './pages/CaseManagement'
 import NetworkManagement from './pages/NetworkManagement'
+import ProgramManagement from './pages/ProgramManagement'
 import AdminPage from './pages/Admin'
 import Stats from './pages/Stats'
 
@@ -25,6 +26,7 @@ export default function App() {
           <Route index element={<Navigate to="/cases" replace />} />
           <Route path="cases" element={<CaseManagement />} />
           <Route path="network" element={<NetworkManagement />} />
+          <Route path="programs" element={<ProgramManagement />} />
           <Route path="stats" element={<Stats />} />
           <Route path="admin" element={<AdminPage />} />
         </Route>
