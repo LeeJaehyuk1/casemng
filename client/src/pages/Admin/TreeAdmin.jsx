@@ -207,10 +207,7 @@ export default function TreeAdmin() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <Text strong>트리 구조 관리</Text>
-        <Button icon={<FolderAddOutlined />} size="small" onClick={() => {
-          const sysActive = folders.find(f => f.node_type === 'system_active')
-          openAdd(sysActive ? { folderId: sysActive.id, title: sysActive.name } : null)
-        }}>
+        <Button icon={<FolderAddOutlined />} size="small" onClick={() => openAdd(null)}>
           최상위 폴더 추가
         </Button>
       </div>
