@@ -165,7 +165,7 @@ export default function CaseHistory({ studentId }) {
       title: '내용',
       dataIndex: 'content',
       key: 'content',
-      align: 'left',
+      onHeaderCell: () => ({ style: { textAlign: 'center' } }),
       render: (v) => <div className="case-content-cell">{v}</div>,
     },
     {
