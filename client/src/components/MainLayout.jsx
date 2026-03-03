@@ -6,16 +6,17 @@ import {
 } from '@ant-design/icons'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 
-const { Sider, Content } = Layout
+const { Content } = Layout
 const { Text } = Typography
 
-const COLLAPSED_WIDTH = 56
-const EXPANDED_WIDTH = 200
+const COLLAPSED_W = 56
+const EXPANDED_W = 200
+const DURATION = '0.3s'
 
 export default function MainLayout() {
   const navigate = useNavigate()
   const location = useLocation()
-  const [collapsed, setCollapsed] = useState(true)
+  const [hovered, setHovered] = useState(false)
   const user = JSON.parse(localStorage.getItem('user') || '{}')
 
   const handleLogout = () => {
@@ -43,100 +44,123 @@ export default function MainLayout() {
 
   return (
     <Layout style={{ height: '100vh' }}>
-      <Sider
-        collapsed={collapsed}
-        collapsedWidth={COLLAPSED_WIDTH}
-        width={EXPANDED_WIDTH}
-        onMouseEnter={() => setCollapsed(false)}
-        onMouseLeave={() => setCollapsed(true)}
+      {/* 커스텀 사이드바 */}
+      <div
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
         style={{
+          width: hovered ? EXPANDED_W : COLLAPSED_W,
+          minWidth: hovered ? EXPANDED_W : COLLAPSED_W,
+          transition: `width ${DURATION} cubic-bezier(0.4,0,0.2,1), min-width ${DURATION} cubic-bezier(0.4,0,0.2,1)`,
           background: 'linear-gradient(180deg, #003eb3 0%, #4a0d9e 100%)',
           boxShadow: '2px 0 8px rgba(0,0,0,0.2)',
-          transition: 'width 0.25s ease',
           overflow: 'hidden',
-          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
           zIndex: 10,
+          flexShrink: 0,
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-          {/* 로고 */}
-          <div
-            onClick={() => navigate('/cases', { state: { _home: Date.now() } })}
-            style={{
-              padding: '18px 0',
-              cursor: 'pointer', userSelect: 'none',
-              borderBottom: '1px solid rgba(255,255,255,0.15)',
-              display: 'flex', alignItems: 'center',
-              justifyContent: collapsed ? 'center' : 'flex-start',
-              paddingLeft: collapsed ? 0 : 16,
-              gap: collapsed ? 0 : 10,
-              transition: 'padding 0.25s ease',
-              overflow: 'hidden',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            <div style={{
-              width: 36, height: 36, borderRadius: '50%',
-              background: 'rgba(255,255,255,0.2)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-            }}>
-              <SolutionOutlined style={{ fontSize: 18, color: '#fff' }} />
-            </div>
-            {!collapsed && (
-              <span style={{ color: '#fff', fontSize: 13, fontWeight: 700, lineHeight: 1.3 }}>
-                사례관리<br />시스템
-              </span>
-            )}
-          </div>
-
-          {/* 메뉴 */}
-          <Menu
-            mode="inline"
-            selectedKeys={[selectedKey]}
-            items={menuItems}
-            onClick={({ key }) => navigate(key)}
-            inlineCollapsed={collapsed}
-            style={{
-              flex: 1,
-              background: 'transparent',
-              border: 'none',
-              marginTop: 8,
-            }}
-            theme="dark"
-          />
-
-          {/* 하단 유저 영역 */}
-          <div style={{
-            borderTop: '1px solid rgba(255,255,255,0.15)',
-            padding: '12px 0',
+        {/* 로고 */}
+        <div
+          onClick={() => navigate('/cases', { state: { _home: Date.now() } })}
+          style={{
+            height: 64,
+            cursor: 'pointer', userSelect: 'none',
+            borderBottom: '1px solid rgba(255,255,255,0.15)',
             display: 'flex', alignItems: 'center',
-            justifyContent: collapsed ? 'center' : 'flex-start',
-            paddingLeft: collapsed ? 0 : 16,
-            gap: collapsed ? 0 : 10,
+            padding: '0 10px',
+            gap: 12,
             overflow: 'hidden',
             whiteSpace: 'nowrap',
-            transition: 'padding 0.25s ease',
+          }}
+        >
+          <div style={{
+            width: 36, height: 36, borderRadius: '50%',
+            background: 'rgba(255,255,255,0.2)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
           }}>
-            <Dropdown menu={{ items: userMenu }} placement="topLeft">
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
-                <Tooltip title={collapsed ? `${user.name} (${user.role === 'admin' ? '관리자' : '담당자'})` : ''} placement="right">
-                  <Avatar icon={<UserOutlined />} size={32} style={{ background: 'rgba(255,255,255,0.3)', flexShrink: 0 }} />
-                </Tooltip>
-                {!collapsed && (
-                  <div style={{ overflow: 'hidden' }}>
-                    <div style={{ color: '#fff', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {user.name}
-                    </div>
-                    <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 11 }}>
-                      {user.role === 'admin' ? '관리자' : '담당자'}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </Dropdown>
+            <SolutionOutlined style={{ fontSize: 18, color: '#fff' }} />
           </div>
+          <span style={{
+            color: '#fff', fontSize: 13, fontWeight: 700, lineHeight: 1.3,
+            opacity: hovered ? 1 : 0,
+            transition: `opacity ${DURATION} cubic-bezier(0.4,0,0.2,1)`,
+            whiteSpace: 'nowrap',
+          }}>
+            사례관리<br />시스템
+          </span>
         </div>
-      </Sider>
+
+        {/* 메뉴 */}
+        <div style={{ flex: 1, overflow: 'hidden' }}>
+          {menuItems.map(item => {
+            const isSelected = selectedKey === item.key
+            return (
+              <Tooltip key={item.key} title={hovered ? '' : item.label} placement="right">
+                <div
+                  onClick={() => navigate(item.key)}
+                  style={{
+                    display: 'flex', alignItems: 'center',
+                    height: 48,
+                    padding: '0 10px',
+                    gap: 12,
+                    cursor: 'pointer',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    background: isSelected ? 'rgba(255,255,255,0.18)' : 'transparent',
+                    borderRight: isSelected ? '3px solid #fff' : '3px solid transparent',
+                    transition: 'background 0.2s',
+                  }}
+                  onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
+                  onMouseLeave={e => { if (!isSelected) e.currentTarget.style.background = 'transparent' }}
+                >
+                  <span style={{ fontSize: 16, color: '#fff', flexShrink: 0, width: 36, textAlign: 'center' }}>
+                    {item.icon}
+                  </span>
+                  <span style={{
+                    color: '#fff', fontSize: 13, fontWeight: isSelected ? 600 : 400,
+                    opacity: hovered ? 1 : 0,
+                    transition: `opacity ${DURATION} cubic-bezier(0.4,0,0.2,1)`,
+                  }}>
+                    {item.label}
+                  </span>
+                </div>
+              </Tooltip>
+            )
+          })}
+        </div>
+
+        {/* 하단 유저 영역 */}
+        <Dropdown menu={{ items: userMenu }} placement="topLeft">
+          <div style={{
+            borderTop: '1px solid rgba(255,255,255,0.15)',
+            padding: '12px 10px',
+            display: 'flex', alignItems: 'center',
+            gap: 12,
+            cursor: 'pointer',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+          }}>
+            <Tooltip title={hovered ? '' : `${user.name}`} placement="right">
+              <Avatar icon={<UserOutlined />} size={32} style={{ background: 'rgba(255,255,255,0.3)', flexShrink: 0 }} />
+            </Tooltip>
+            <div style={{
+              overflow: 'hidden',
+              opacity: hovered ? 1 : 0,
+              transition: `opacity ${DURATION} cubic-bezier(0.4,0,0.2,1)`,
+            }}>
+              <div style={{ color: '#fff', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap' }}>
+                {user.name}
+              </div>
+              <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 11 }}>
+                {user.role === 'admin' ? '관리자' : '담당자'}
+              </div>
+            </div>
+          </div>
+        </Dropdown>
+      </div>
 
       <Content style={{ overflow: 'hidden', height: '100vh' }}>
         <Outlet />
