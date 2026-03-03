@@ -47,9 +47,11 @@ export default function Stats() {
   const [schoolData, setSchoolData] = useState([])
   const [schoolType, setSchoolType] = useState('초등학교')
   const [studentData, setStudentData] = useState([])
+  const [managerData, setManagerData] = useState([])
   const [loadingCat, setLoadingCat] = useState(false)
   const [loadingSchool, setLoadingSchool] = useState(false)
   const [loadingStudent, setLoadingStudent] = useState(false)
+  const [loadingManager, setLoadingManager] = useState(false)
 
   const loadAll = async (range = dateRange, type = schoolType) => {
     if (!range?.[0] || !range?.[1]) return
@@ -72,6 +74,12 @@ export default function Stats() {
       .then(res => setStudentData(res.data))
       .catch(() => setStudentData([]))
       .finally(() => setLoadingStudent(false))
+
+    setLoadingManager(true)
+    api.get('/stats/manager', { params })
+      .then(res => setManagerData(res.data))
+      .catch(() => setManagerData([]))
+      .finally(() => setLoadingManager(false))
   }
 
   const handleSchoolTypeChange = (e) => {
@@ -216,8 +224,8 @@ export default function Stats() {
           </ChartCard>
         </div>
 
-        {/* 학생별 이력현황 */}
-        <div style={{ marginTop: 20 }}>
+        {/* 학생별 이력현황 + 담당별 이력현황 */}
+        <div style={{ display: 'flex', gap: 20, marginTop: 20 }}>
           <ChartCard
             title="학생별 이력현황"
             loading={loadingStudent}
@@ -226,21 +234,33 @@ export default function Stats() {
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={studentData} margin={{ top: 20, right: 10, left: 0, bottom: 40 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis
-                  dataKey="student"
-                  tick={{ fontSize: 12 }}
-                  angle={-30}
-                  textAnchor="end"
-                  interval={0}
-                />
+                <XAxis dataKey="student" tick={{ fontSize: 12 }} angle={-30} textAnchor="end" interval={0} />
                 <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
-                <Tooltip
-                  formatter={(v) => [`${v}건`, '건수']}
-                  contentStyle={{ borderRadius: 8, border: '1px solid #eee' }}
-                />
+                <Tooltip formatter={(v) => [`${v}건`, '건수']} contentStyle={{ borderRadius: 8, border: '1px solid #eee' }} />
                 <Bar dataKey="count" radius={[6, 6, 0, 0]} maxBarSize={50}>
                   {studentData.map((_, i) => (
                     <Cell key={i} fill={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
+                  ))}
+                  <LabelList dataKey="count" position="top" style={{ fontSize: 11, fontWeight: 600 }} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </ChartCard>
+
+          <ChartCard
+            title="담당별 이력현황"
+            loading={loadingManager}
+            empty={managerData.length === 0}
+          >
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={managerData} margin={{ top: 20, right: 10, left: 0, bottom: 40 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="manager" tick={{ fontSize: 12 }} angle={-30} textAnchor="end" interval={0} />
+                <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
+                <Tooltip formatter={(v) => [`${v}건`, '건수']} contentStyle={{ borderRadius: 8, border: '1px solid #eee' }} />
+                <Bar dataKey="count" radius={[6, 6, 0, 0]} maxBarSize={50}>
+                  {managerData.map((_, i) => (
+                    <Cell key={i} fill={SCHOOL_COLORS[i % SCHOOL_COLORS.length]} />
                   ))}
                   <LabelList dataKey="count" position="top" style={{ fontSize: 11, fontWeight: 600 }} />
                 </Bar>

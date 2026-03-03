@@ -76,4 +76,28 @@ router.get('/student', authMiddleware, async (req, res) => {
   }
 });
 
+// GET /api/stats/manager?start=YYYY-MM-DD&end=YYYY-MM-DD
+// 담당자별 사례이력 건수
+router.get('/manager', authMiddleware, async (req, res) => {
+  const { start, end } = req.query;
+  if (!start || !end) {
+    return res.status(400).json({ message: '시작일과 종료일이 필요합니다.' });
+  }
+  try {
+    const result = await pool.query(
+      `SELECT u.name as manager, COUNT(ch.id)::int as count
+       FROM case_histories ch
+       JOIN users u ON ch.created_by = u.id
+       WHERE ch.case_date BETWEEN $1 AND $2
+       GROUP BY u.id, u.name
+       ORDER BY count DESC`,
+      [start, end]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+  }
+});
+
 module.exports = router;
