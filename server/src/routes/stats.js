@@ -26,4 +26,30 @@ router.get('/category', authMiddleware, async (req, res) => {
   }
 });
 
+// GET /api/stats/school?start=YYYY-MM-DD&end=YYYY-MM-DD&type=초등학교|중학교|고등학교
+// 학교별 총 사례 진행 건수
+router.get('/school', authMiddleware, async (req, res) => {
+  const { start, end, type } = req.query;
+  if (!start || !end) {
+    return res.status(400).json({ message: '시작일과 종료일이 필요합니다.' });
+  }
+  try {
+    const result = await pool.query(
+      `SELECT s.school, COUNT(ch.id)::int as count
+       FROM case_histories ch
+       JOIN students s ON ch.student_id = s.id
+       WHERE ch.case_date BETWEEN $1 AND $2
+         AND s.school IS NOT NULL AND s.school != ''
+         AND ($3::text IS NULL OR s.school ILIKE '%' || $3 || '%')
+       GROUP BY s.school
+       ORDER BY count DESC`,
+      [start, end, type || null]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+  }
+});
+
 module.exports = router;
