@@ -39,6 +39,7 @@ export default function DashboardPanel({ onSelectStudent }) {
       dataIndex: 'student_name',
       key: 'student_name',
       width: 90,
+      align: 'center',
       render: (name, record) => (
         <Button
           type="link"
@@ -55,6 +56,7 @@ export default function DashboardPanel({ onSelectStudent }) {
       dataIndex: 'folder_name',
       key: 'folder_name',
       width: 120,
+      align: 'center',
       render: v => <Text type="secondary" style={{ fontSize: 12 }}>{v || '-'}</Text>,
     },
     {
@@ -62,6 +64,7 @@ export default function DashboardPanel({ onSelectStudent }) {
       dataIndex: 'category',
       key: 'category',
       width: 90,
+      align: 'center',
       render: v => <Tag color="purple">{v}</Tag>,
       filters: ['가정방문','상담','전화상담','기관연계','지원','회의','교육','모니터링','기타']
         .map(c => ({ text: c, value: c })),
@@ -72,12 +75,14 @@ export default function DashboardPanel({ onSelectStudent }) {
       dataIndex: 'content',
       key: 'content',
       ellipsis: true,
+      onHeaderCell: () => ({ style: { textAlign: 'center' } }),
     },
     {
       title: '작성자',
       dataIndex: 'created_by_name',
       key: 'created_by_name',
       width: 80,
+      align: 'center',
     },
   ]
 
