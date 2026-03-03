@@ -88,7 +88,7 @@ export default function MainLayout() {
             transition: `opacity ${DURATION} cubic-bezier(0.4,0,0.2,1)`,
             whiteSpace: 'nowrap',
           }}>
-            사례관리<br />시스템
+            노원교육복지센터<br />사례관리시스템
           </span>
         </div>
 

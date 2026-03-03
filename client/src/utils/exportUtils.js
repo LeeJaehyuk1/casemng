@@ -54,7 +54,7 @@ function buildReportHTML(student, cases) {
     <!-- 헤더 -->
     <div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #001529;padding-bottom:12px;margin-bottom:20px">
       <div>
-        <div style="font-size:10px;color:#888;margin-bottom:4px">사례관리 시스템</div>
+        <div style="font-size:10px;color:#888;margin-bottom:4px">노원교육복지센터 사례관리시스템</div>
         <h2 style="margin:0;font-size:22px;font-weight:700;color:#001529">사례관리 기록</h2>
       </div>
       <div style="text-align:right;font-size:11px;color:#888">출력일: ${dayjs().format('YYYY-MM-DD')}</div>

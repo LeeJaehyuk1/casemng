@@ -50,7 +50,7 @@ export default function Login() {
           }}>
             <SolutionOutlined style={{ fontSize: 30, color: '#fff' }} />
           </div>
-          <Title level={3} style={{ margin: 0, color: '#1a1a2e' }}>사례관리 시스템</Title>
+          <Title level={3} style={{ margin: 0, color: '#1a1a2e' }}>노원교육복지센터 사례관리시스템</Title>
           <Text type="secondary">로그인하여 시작하세요</Text>
         </div>
 
