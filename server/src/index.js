@@ -30,6 +30,7 @@ app.use('/api/network',     require('./routes/network'));
 app.use('/api/users',       require('./routes/users'));
 app.use('/api/programs',    require('./routes/programs'));
 app.use('/api/stats',       require('./routes/stats'));
+app.use('/api/excel-upload', require('./routes/excel-upload'));
 
 // 헬스체크
 app.get('/api/health', (req, res) => {

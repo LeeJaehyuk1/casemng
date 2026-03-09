@@ -127,4 +127,7 @@ export const createInstructor = (data) => api.post('/programs/instructors', data
 export const updateInstructor = (id, data) => api.put(`/programs/instructors/${id}`, data)
 export const deleteInstructor = (id) => api.delete(`/programs/instructors/${id}`)
 
+// Excel Upload
+export const uploadExcelData = (data) => api.post('/excel-upload', data)
+
 export default api

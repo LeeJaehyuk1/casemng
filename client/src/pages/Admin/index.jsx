@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { Space } from 'antd'
-import { ApartmentOutlined, TeamOutlined, ControlOutlined } from '@ant-design/icons'
+import { ApartmentOutlined, TeamOutlined, ControlOutlined, FileExcelOutlined } from '@ant-design/icons'
 import TreeAdmin from './TreeAdmin'
 import UserAdmin from './UserAdmin'
+import ExcelUpload from './ExcelUpload'
 
 const MENU_ITEMS = [
   { key: 'tree',  icon: <ApartmentOutlined />, label: '트리 구성 관리' },
   { key: 'users', icon: <TeamOutlined />,      label: '사용자 관리' },
+  { key: 'excel', icon: <FileExcelOutlined />, label: '엑셀 업로드' },
 ]
 
 export default function AdminPage() {
@@ -70,6 +72,7 @@ export default function AdminPage() {
         }}>
           {activeMenu === 'tree'  && <TreeAdmin />}
           {activeMenu === 'users' && <UserAdmin />}
+          {activeMenu === 'excel' && <ExcelUpload />}
         </div>
       </div>
     </div>
